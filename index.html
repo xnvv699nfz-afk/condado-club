@@ -16,15 +16,15 @@
 <meta property="og:site_name" content="Condado Club" />
 <meta property="og:title" content="Condado Club Dénia · Discoteca TOP #94 del Mundo" />
 <meta property="og:description" content="11 años de fiestas en Dénia. DJs internacionales, reservas VIP y la mejor música urbana en la Costa Blanca." />
-<meta property="og:image" content="https://www.condadodenia.com/assets/sala/sala-condado-02.jpg" />
-<meta property="og:url" content="https://www.condadodenia.com/" />
+<meta property="og:image" content="https://condadoclub.es/assets/sala/sala-condado-02.jpg" />
+<meta property="og:url" content="https://condadoclub.es/" />
 <meta property="og:locale" content="es_ES" />
  
 <!-- Twitter / X Card -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Condado Club Dénia · Discoteca TOP #94 del Mundo" />
 <meta name="twitter:description" content="11 años de fiestas en Dénia. DJs internacionales, reservas VIP y la mejor música urbana en la Costa Blanca." />
-<meta name="twitter:image" content="https://www.condadodenia.com/assets/sala/sala-condado-02.jpg" />
+<meta name="twitter:image" content="https://condadoclub.es/assets/sala/sala-condado-02.jpg" />
  
 <!-- GEO / Datos estructurados para buscadores con IA -->
 <script type="application/ld+json">
@@ -33,8 +33,8 @@
   "@type": "NightClub",
   "name": "Condado Club",
   "alternateName": "Condado Club Dénia",
-  "url": "https://www.condadodenia.com/",
-  "image": "https://www.condadodenia.com/assets/sala/sala-condado-02.jpg",
+  "url": "https://condadoclub.es/",
+  "image": "https://condadoclub.es/assets/sala/sala-condado-02.jpg",
   "description": "Discoteca en Dénia (Alicante) reconocida en el TOP #94 de los mejores clubs del mundo en 2025. 11 años de actividad desde 2015, con DJs nacionales e internacionales y servicio de reservas VIP.",
   "address": {
     "@type": "PostalAddress",
@@ -1007,7 +1007,7 @@ const { useState, useEffect, useRef } = React;
 function Logo({ size = 'md' }) {
   const h = size === 'sm' ? 42 : 40;
   return (
-    <a href="#/" onClick={(e) => { e.preventDefault(); window.location.hash = '/'; }} className="logo">
+    <a href="/" onClick={(e) => { e.preventDefault(); history.pushState(null, '', '/'); window.dispatchEvent(new PopStateEvent('popstate')); }} className="logo">
       <img src="assets/logos/logo-condado.png" alt="Condado Club" style={{ height: h, width: 'auto', display: 'block' }} />
     </a>
   );
@@ -1052,7 +1052,7 @@ function Nav({ route, onNav }) {
           {NAV_ITEMS.map((item) => (
             <li key={item.path}>
               <a
-                href={`#${item.path}`}
+                href={item.path}
                 onClick={go(item.path)}
                 className={`nav-link${route === item.path || (item.path === '/sala' && route === '/artistas') ? ' active' : ''}`}
               >
@@ -1070,7 +1070,7 @@ function Nav({ route, onNav }) {
         {NAV_ITEMS.map((item) => (
           <a
             key={item.path}
-            href={`#${item.path}`}
+            href={item.path}
             onClick={go(item.path)}
             className={`drawer-link${route === item.path ? ' active' : ''}`}
           >
@@ -1324,8 +1324,8 @@ function Home({ onNav }) {
             Dénia, Alicante
           </p>
           <div className="hero-ctas">
-            <a href="#/calendario" onClick={(e) => { e.preventDefault(); onNav('/calendario'); }} className="btn btn-gold">Ver próximos eventos →</a>
-            <a href="#/mesas-vip" onClick={(e) => { e.preventDefault(); onNav('/mesas-vip'); }} className="btn btn-ghost">COMPRAR TICKETS Y VIP</a>
+            <a href="/calendario" onClick={(e) => { e.preventDefault(); onNav('/calendario'); }} className="btn btn-gold">Ver próximos eventos →</a>
+            <a href="/mesas-vip" onClick={(e) => { e.preventDefault(); onNav('/mesas-vip'); }} className="btn btn-ghost">COMPRAR TICKETS Y VIP</a>
           </div>
         </div>
       </section>
@@ -1422,7 +1422,7 @@ function Home({ onNav }) {
             {EVENTS.map((ev) => <EventCard key={ev.id} event={ev} onNav={onNav} width={280} />)}
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: 36 }}>
-            <a href="#/calendario" onClick={(e) => { e.preventDefault(); onNav('/calendario'); }} className="btn btn-ghost">
+            <a href="/calendario" onClick={(e) => { e.preventDefault(); onNav('/calendario'); }} className="btn btn-ghost">
               Ver calendario completo →
             </a>
           </div>
@@ -1467,7 +1467,7 @@ function Home({ onNav }) {
           <p style={{ fontSize: 16, color: 'var(--w60)', lineHeight: 1.75, marginBottom: 36, maxWidth: 640, marginLeft: 'auto', marginRight: 'auto' }}>
             Cuando el atardecer tiñe el mar de naranja y el Montgó se convierte en silueta, Condado despierta. El mayor show de la Costa Blanca empieza donde otros terminan.
           </p>
-          <a href="#/sala" onClick={(e) => { e.preventDefault(); onNav('/sala'); }} className="btn btn-gold">
+          <a href="/sala" onClick={(e) => { e.preventDefault(); onNav('/sala'); }} className="btn btn-gold">
             Descubre la sala
           </a>
         </div>
@@ -1498,7 +1498,7 @@ function Home({ onNav }) {
             ))}
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: 36 }}>
-            <a href="#/artistas" onClick={(e) => { e.preventDefault(); onNav('/artistas'); }} className="btn btn-ghost">
+            <a href="/artistas" onClick={(e) => { e.preventDefault(); onNav('/artistas'); }} className="btn btn-ghost">
               Ver más artistas →
             </a>
           </div>
@@ -1564,7 +1564,7 @@ function Home({ onNav }) {
           </div>
 
           <div style={{ marginTop: 40 }}>
-            <a href="#/sala" onClick={(e) => { e.preventDefault(); onNav('/sala'); }} className="btn btn-ghost">Conoce la sala</a>
+            <a href="/sala" onClick={(e) => { e.preventDefault(); onNav('/sala'); }} className="btn btn-ghost">Conoce la sala</a>
           </div>
         </div>
         <style>{`
@@ -1642,7 +1642,7 @@ function Home({ onNav }) {
                   </li>
                 ))}
               </ul>
-              <a href="#/mesas-vip" onClick={(e) => { e.preventDefault(); onNav('/mesas-vip'); }} className="btn btn-gold" style={{ alignSelf: 'flex-start' }}>
+              <a href="/mesas-vip" onClick={(e) => { e.preventDefault(); onNav('/mesas-vip'); }} className="btn btn-gold" style={{ alignSelf: 'flex-start' }}>
                 Ver todas las zonas VIP
               </a>
             </div>
@@ -1700,7 +1700,7 @@ function Home({ onNav }) {
           Dénia, Alicante
         </p>
         <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
-          <a href="#/mesas-vip" onClick={(e) => { e.preventDefault(); onNav('/mesas-vip'); }} className="btn btn-gold">TICKETS Y VIP</a>
+          <a href="/mesas-vip" onClick={(e) => { e.preventDefault(); onNav('/mesas-vip'); }} className="btn btn-gold">TICKETS Y VIP</a>
         </div>
       </div>
     </div>
@@ -2516,7 +2516,7 @@ function EventosPrivados({ onNav }) {
             <p style={{ fontSize: 14.5, color: 'var(--w60)', lineHeight: 1.6, maxWidth: 540, margin: '16px auto 28px' }}>
               Cuéntanos tu proyecto y diseñaremos contigo una propuesta a medida en la sala más imponente de la Costa Blanca.
             </p>
-            <a href="#/contacto" onClick={(e) => { e.preventDefault(); onNav('/contacto'); }} className="btn btn-gold" style={{ padding: '16px 32px' }}>
+            <a href="/contacto" onClick={(e) => { e.preventDefault(); onNav('/contacto'); }} className="btn btn-gold" style={{ padding: '16px 32px' }}>
               Solicita información
             </a>
           </div>
@@ -3189,23 +3189,24 @@ function App() {
   useEffect(() => { applyTweaks(t); }, [t.vibe, t.display, t.intensity]);
 
   const [route, setRoute] = useState(() => {
-    const h = window.location.hash.replace('#', '');
-    return ROUTES[h] ? h : '/';
+    const p = window.location.pathname;
+    return ROUTES[p] ? p : '/';
   });
 
   useEffect(() => {
-    const onHashChange = () => {
-      const h = window.location.hash.replace('#', '') || '/';
-      const next = ROUTES[h] ? h : '/';
+    const onPopState = () => {
+      const p = window.location.pathname || '/';
+      const next = ROUTES[p] ? p : '/';
       setRoute(next);
       window.scrollTo({ top: 0, behavior: 'instant' });
     };
-    window.addEventListener('hashchange', onHashChange);
-    return () => window.removeEventListener('hashchange', onHashChange);
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
   const onNav = (path) => {
-    window.location.hash = path;
+    history.pushState(null, '', path);
+    window.dispatchEvent(new PopStateEvent('popstate'));
   };
 
   // Reveal-on-scroll
