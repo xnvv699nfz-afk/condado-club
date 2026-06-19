@@ -1250,7 +1250,7 @@ function Home({ onNav }) {
     <div className="page-enter">
       {/* HERO */}
       <section style={{ position: 'relative', minHeight: 'var(--hero-min)', display: 'flex', alignItems: 'stretch', overflow: 'hidden' }}>
-        <video autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} src="assets/video/video-hero-97-baja.mp4" />
+        <video autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} src="assets/video/video-hero-97-baja2.mp4" />
         <div style={{
           position: 'absolute', inset: 0,
           background: 'linear-gradient(to bottom, rgba(8,5,9,0.4) 0%, rgba(8,5,9,0.4) 45%, rgba(8,5,9,0.88) 100%)',
@@ -1498,7 +1498,7 @@ function Home({ onNav }) {
               <img src="assets/sala/sala-condado-06.jpg" alt="Sala Condado" loading="lazy" />
             </div>
             <div className="hg-item hg-d">
-              <video autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} src="assets/video/video-hero-97-baja.mp4" />
+              <video autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} src="assets/video/video-hero-97-baja2.mp4" />
             </div>
             <div className="hg-item hg-e">
               <img src="assets/sala/sala-condado-03.jpg" alt="Sala Condado" loading="lazy" />
@@ -1617,13 +1617,13 @@ function Home({ onNav }) {
           background: 'linear-gradient(90deg, transparent, var(--gold-border), transparent)',
         }}></div>
         <img
-          src="assets/svg/Sin título-32.svg"
+          src="assets/svg/condado-sala.svg"
           aria-hidden="true"
           style={{
             position: 'absolute', inset: 0,
             width: '100%', height: '100%',
-            objectFit: 'contain',
-            opacity: 0.25,
+            objectFit: 'cover',
+            opacity: 0.12,
             filter: 'brightness(0) invert(1)',
             pointerEvents: 'none',
           }}
@@ -1646,7 +1646,7 @@ function Home({ onNav }) {
           Dénia, Alicante
         </p>
         <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
-          <a href="#/mesas-vip" onClick={(e) => { e.preventDefault(); onNav('/mesas-vip'); }} className="btn btn-ghost">TICKETS Y VIP</a>
+          <a href="#/mesas-vip" onClick={(e) => { e.preventDefault(); onNav('/mesas-vip'); }} className="btn btn-gold">TICKETS Y VIP</a>
         </div>
       </div>
     </div>
@@ -1662,6 +1662,18 @@ Object.assign(window, { Home });
 function PageHeader({ eyebrow, title, subtitle, cta }) {
   return (
     <header style={{ padding: '140px 24px 60px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+      <img
+        src="assets/svg/condado-sala.svg"
+        aria-hidden="true"
+        style={{
+          position: 'absolute', inset: 0,
+          width: '100%', height: '100%',
+          objectFit: 'cover',
+          opacity: 0.1,
+          filter: 'brightness(0) invert(1)',
+          pointerEvents: 'none',
+        }}
+      />
       <div style={{
         position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
         width: 800, height: 280, maxWidth: '120vw',
