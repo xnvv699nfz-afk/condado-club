@@ -1417,9 +1417,21 @@ function Home({ onNav }) {
       </div>
 
       {/* PRÓXIMOS EVENTOS — teaser */}
-      <section className="container" style={{ position: 'relative' }}>
+      <section className="container" style={{ position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg, transparent, var(--gold-border), transparent)' }}></div>
-        <div className="container-wide" style={{ margin: '0 auto' }}>
+        <img
+          src="assets/svg/condado-sala.svg"
+          aria-hidden="true"
+          style={{
+            position: 'absolute', inset: 0,
+            width: '100%', height: '100%',
+            objectFit: 'cover',
+            opacity: 0.12,
+            filter: 'brightness(0) invert(1)',
+            pointerEvents: 'none',
+          }}
+        />
+        <div className="container-wide" style={{ margin: '0 auto', position: 'relative', zIndex: 1 }}>
           <div className="section-head">
             <div>
               <span className="eyebrow">Calendario</span>
