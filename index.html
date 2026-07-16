@@ -2260,11 +2260,7 @@ function Evento({ onNav }) {
 
   return (
     <div className="page-enter">
-      <PageHeader
-        eyebrow="Tickets & VIP"
-        title='Tu <em style="font-style:normal;font-weight:300;color:var(--gold)">evento</em>'
-      />
-      <div style={{ padding: '0 24px 80px' }}>
+      <div style={{ padding: '140px 24px 80px' }}>
         <div className="container-wide" style={{ margin: '0 auto' }}>
           <div id="fourvenues-iframe" ref={fourvenuesEventRef}></div>
         </div>
@@ -3374,7 +3370,7 @@ function CookieBanner({ onNav }) {
         aria-label="Preferencias de cookies"
         onClick={openPreferences}
         style={{
-          position: 'fixed', left: 20, bottom: 20, zIndex: 500,
+          position: 'fixed', left: 16, bottom: 16, zIndex: 500,
           width: 46, height: 46, borderRadius: 999,
           background: 'var(--night-2)', border: '1px solid var(--gold-border)',
           color: 'var(--gold)', fontSize: 20,
@@ -3391,14 +3387,16 @@ function CookieBanner({ onNav }) {
 
   return (
     <div style={{
-      position: 'fixed', left: 20, bottom: 20, zIndex: 500,
-      width: isPreferences ? 400 : 'calc(100% - 40px)',
+      position: 'fixed', left: 16, bottom: 16, zIndex: 500,
+      width: 'calc(100% - 32px)',
       maxWidth: isPreferences ? 400 : 640,
       background: 'var(--night-2)',
       border: '1px solid var(--gold-border)',
       borderRadius: 'var(--radius-lg)',
       boxShadow: '0 20px 60px rgba(0,0,0,0.55)',
-      padding: 26,
+      padding: '22px 20px',
+      maxHeight: 'calc(100vh - 32px)',
+      overflowY: 'auto',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
         <span style={{ fontSize: 18 }}>🍪</span>
