@@ -1303,6 +1303,17 @@ Object.assign(window, { Nav, Footer, Logo, EventCard, NAV_ITEMS, EVENTS, ARTISTS
 
 // Home page
 function Home({ onNav }) {
+  const fourvenuesRef = useRef(null);
+
+  useEffect(() => {
+    const container = fourvenuesRef.current;
+    if (!container) return;
+    const script = document.createElement('script');
+    script.src = 'https://custom-iframe.fourvenues.com/iframe/condado-club-denia/script?type=home&href=evento';
+    container.appendChild(script);
+    return () => { container.innerHTML = ''; };
+  }, []);
+
   return (
     <div className="page-enter">
       {/* HERO */}
@@ -1416,7 +1427,7 @@ function Home({ onNav }) {
         `}</style>
       </div>
 
-      {/* PRÓXIMOS EVENTOS — teaser */}
+      {/* PRÓXIMOS EVENTOS — widget Fourvenues */}
       <section className="container" style={{ position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg, transparent, var(--gold-border), transparent)' }}></div>
         <img
@@ -1438,9 +1449,7 @@ function Home({ onNav }) {
               <h2 style={{ marginTop: 10 }}>Próximos <em>eventos</em></h2>
             </div>
           </div>
-          <div style={{ display: 'flex', gap: 14, overflowX: 'auto', paddingBottom: 8 }} className="no-scrollbar">
-            {EVENTS.map((ev) => <EventCard key={ev.id} event={ev} onNav={onNav} width={280} />)}
-          </div>
+          <div ref={fourvenuesRef}></div>
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: 36 }}>
             <a href="/calendario" onClick={(e) => { e.preventDefault(); onNav('/calendario'); }} className="btn btn-ghost">
               Ver calendario completo →
