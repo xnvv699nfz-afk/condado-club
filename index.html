@@ -3254,9 +3254,20 @@ function WhatsAppIcon() {
 }
 
 function WhatsAppButton() {
+  const phone = '34601602030';
+  const text = 'Hola%2C+necesito+informaci%C3%B3n+sobre+Condado+Club.+Condado+Club';
+
+  const [isMobile] = useState(() =>
+    /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+  );
+
+  const href = isMobile
+    ? `https://wa.me/${phone}?text=${text}`
+    : `https://web.whatsapp.com/send?phone=${phone}&text=${text}`;
+
   return (
     <a
-      href="https://web.whatsapp.com/send?phone=34601602030&text=Hola%2C+necesito+informaci%C3%B3n+sobre+Condado+Club.+Condado+Club"
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Escríbenos por WhatsApp"
