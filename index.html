@@ -4,12 +4,22 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'googletagmanager.com/gtm.js?…;
-})(window,document,'script','dataLayer_gtm_t2tbqthz','GTM-T2TBQTHZ');</script>
+<!-- Google Tag Manager (carga diferida: solo se activa si el usuario acepta las cookies analíticas) -->
+<script>
+window.loadGTM = function () {
+  if (window.__gtmLoaded) return;
+  window.__gtmLoaded = true;
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer_gtm_t2tbqthz','GTM-T2TBQTHZ');
+};
+try {
+  var storedConsent = JSON.parse(localStorage.getItem('cookie_consent'));
+  if (storedConsent && storedConsent.analytics) window.loadGTM();
+} catch (e) {}
+</script>
 <!-- End Google Tag Manager -->
  
 <!-- SEO básico -->
@@ -2214,7 +2224,32 @@ function MesasVIP({ onNav }) {
   );
 }
 
-Object.assign(window, { Calendario, MesasVIP, PageHeader });
+function Evento({ onNav }) {
+  const fourvenuesEventRef = useRef(null);
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://www.fourvenues.com/assets/iframe/condado-club-denia/events';
+    document.body.appendChild(script);
+    return () => { script.remove(); };
+  }, []);
+
+  return (
+    <div className="page-enter">
+      <PageHeader
+        eyebrow="Tickets & VIP"
+        title='Tu <em style="font-style:normal;font-weight:300;color:var(--gold)">evento</em>'
+      />
+      <div style={{ padding: '0 24px 80px' }}>
+        <div className="container-wide" style={{ margin: '0 auto' }}>
+          <div id="fourvenues-iframe" ref={fourvenuesEventRef}></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { Calendario, MesasVIP, PageHeader, Evento });
 
 
 // === page-sala-artistas.jsx ===
@@ -3207,24 +3242,161 @@ const ROUTES = {
   '/sala': Sala,
   '/artistas': Artistas,
   '/eventos-privados': EventosPrivados,
+  '/evento': Evento,
   '/contacto': Contacto,
   '/aviso-legal': AvisoLegal,
   '/politica-privacidad': PoliticaPrivacidad,
   '/politica-cookies': PoliticaCookies,
 };
 
+function CookieToggle({ checked, onChange, disabled }) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      disabled={disabled}
+      onClick={onChange}
+      style={{
+        width: 40, height: 22, borderRadius: 999, flexShrink: 0, padding: 0,
+        border: `1px solid ${checked ? 'var(--gold-border)' : 'var(--w15)'}`,
+        background: checked ? 'var(--gold-dim)' : 'var(--w08)',
+        position: 'relative',
+        cursor: disabled ? 'default' : 'pointer',
+        opacity: disabled ? 0.55 : 1,
+        transition: 'background 160ms ease, border-color 160ms ease',
+      }}
+    >
+      <span style={{
+        position: 'absolute', top: 2, left: checked ? 20 : 2,
+        width: 16, height: 16, borderRadius: 999,
+        background: checked ? 'var(--gold)' : 'var(--w40)',
+        transition: 'left 160ms ease',
+      }} />
+    </button>
+  );
+}
+
+function CookieBanner({ onNav }) {
+  const [consent, setConsent] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('cookie_consent')); } catch (e) { return null; }
+  });
+  const [view, setView] = useState('notice'); // 'notice' | 'preferences'
+  const [analyticsOn, setAnalyticsOn] = useState(false);
+
+  const persist = (analytics) => {
+    const record = { necessary: true, analytics, date: Date.now() };
+    try { localStorage.setItem('cookie_consent', JSON.stringify(record)); } catch (e) {}
+    if (analytics && window.loadGTM) window.loadGTM();
+    setConsent(record);
+    setView('notice');
+  };
+
+  const openPreferences = () => {
+    setAnalyticsOn(consent ? consent.analytics : false);
+    setView('preferences');
+  };
+
+  // Decisión ya tomada: solo un icono flotante para reabrir las preferencias
+  if (consent && view !== 'preferences') {
+    return (
+      <button
+        aria-label="Preferencias de cookies"
+        onClick={openPreferences}
+        style={{
+          position: 'fixed', left: 20, bottom: 20, zIndex: 500,
+          width: 46, height: 46, borderRadius: 999,
+          background: 'var(--night-2)', border: '1px solid var(--gold-border)',
+          color: 'var(--gold)', fontSize: 20,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.45)',
+        }}
+      >
+        🍪
+      </button>
+    );
+  }
+
+  const isPreferences = view === 'preferences';
+
+  return (
+    <div style={{
+      position: 'fixed', left: 20, bottom: 20, zIndex: 500,
+      width: isPreferences ? 400 : 'calc(100% - 40px)',
+      maxWidth: isPreferences ? 400 : 640,
+      background: 'var(--night-2)',
+      border: '1px solid var(--gold-border)',
+      borderRadius: 'var(--radius-lg)',
+      boxShadow: '0 20px 60px rgba(0,0,0,0.55)',
+      padding: 26,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+        <span style={{ fontSize: 18 }}>🍪</span>
+        <span className="eyebrow" style={{ marginBottom: 0 }}>Tu privacidad</span>
+      </div>
+
+      {!isPreferences ? (
+        <>
+          <h3 className="serif" style={{ fontSize: 19, fontWeight: 800, textTransform: 'uppercase', letterSpacing: -0.3, marginBottom: 10 }}>
+            Este sitio web usa cookies
+          </h3>
+          <p style={{ fontSize: 13, color: 'var(--w60)', lineHeight: 1.65, marginBottom: 22 }}>
+            Usamos cookies propias necesarias para el funcionamiento de la web y, con tu consentimiento, cookies analíticas (Google Analytics) para conocer cómo se usa el sitio. Más información en nuestra{' '}
+            <a href="/politica-cookies" onClick={(e) => { e.preventDefault(); onNav('/politica-cookies'); }} style={{ color: 'var(--gold)' }}>
+              Política de Cookies
+            </a>.
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'flex-end' }}>
+            <button onClick={() => persist(false)} className="btn btn-ghost">Rechazar</button>
+            <button onClick={openPreferences} className="btn btn-ghost">Preferencias</button>
+            <button onClick={() => persist(true)} className="btn btn-gold">Aceptar todo</button>
+          </div>
+        </>
+      ) : (
+        <>
+          <h3 className="serif" style={{ fontSize: 19, fontWeight: 800, textTransform: 'uppercase', letterSpacing: -0.3, marginBottom: 18 }}>
+            Preferencias de cookies
+          </h3>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, padding: '14px 0', borderBottom: '1px solid var(--w08)' }}>
+              <div>
+                <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--white)', marginBottom: 4 }}>Necesarias</p>
+                <p style={{ fontSize: 12, color: 'var(--w40)', lineHeight: 1.55 }}>Imprescindibles para el funcionamiento de la web. Siempre activas.</p>
+              </div>
+              <CookieToggle checked disabled />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, padding: '14px 0' }}>
+              <div>
+                <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--white)', marginBottom: 4 }}>Estadísticas</p>
+                <p style={{ fontSize: 12, color: 'var(--w40)', lineHeight: 1.55 }}>Google Analytics. Nos ayuda a entender cómo se usa el sitio.</p>
+              </div>
+              <CookieToggle checked={analyticsOn} onChange={() => setAnalyticsOn((v) => !v)} />
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end', marginTop: 22 }}>
+            <button onClick={() => setView('notice')} className="btn btn-ghost">Atrás</button>
+            <button onClick={() => persist(analyticsOn)} className="btn btn-gold">Guardar preferencias</button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
   useEffect(() => { applyTweaks(t); }, [t.vibe, t.display, t.intensity]);
 
+  const normalizePath = (p) => (p.length > 1 && p.endsWith('/') ? p.slice(0, -1) : p);
+
   const [route, setRoute] = useState(() => {
-    const p = window.location.pathname;
+    const p = normalizePath(window.location.pathname);
     return ROUTES[p] ? p : '/';
   });
 
   useEffect(() => {
     const onPopState = () => {
-      const p = window.location.pathname || '/';
+      const p = normalizePath(window.location.pathname || '/');
       const next = ROUTES[p] ? p : '/';
       setRoute(next);
       window.scrollTo({ top: 0, behavior: 'instant' });
@@ -3264,6 +3436,7 @@ function App() {
         <PageComponent onNav={onNav} />
       </main>
       <Footer onNav={onNav} />
+      <CookieBanner onNav={onNav} />
       <TweaksPanel>
         <TweakSection label="Vibe" />
         <TweakColor
