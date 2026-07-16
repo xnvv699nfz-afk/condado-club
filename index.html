@@ -3,9 +3,24 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<base href="/" />
 
-<!-- Google Tag Manager (carga diferida: solo se activa si el usuario acepta las cookies analíticas) -->
+<!-- Google Tag Manager + Consent Mode (carga diferida: solo se activa según las cookies aceptadas) -->
 <script>
+window.dataLayer_gtm_t2tbqthz = window.dataLayer_gtm_t2tbqthz || [];
+window.gtagConsent = function () { window.dataLayer_gtm_t2tbqthz.push(arguments); };
+
+// Por defecto, denegado hasta que el usuario decida (Google Consent Mode v2).
+// analytics_storage: mide el uso del sitio (Estadísticas).
+// ad_storage / ad_user_data / ad_personalization: datos que Google Analytics
+// comparte con fines publicitarios (perfiles, remarketing) -> ligado a Marketing.
+window.gtagConsent('consent', 'default', {
+  analytics_storage: 'denied',
+  ad_storage: 'denied',
+  ad_user_data: 'denied',
+  ad_personalization: 'denied',
+});
+
 window.loadGTM = function () {
   if (window.__gtmLoaded) return;
   window.__gtmLoaded = true;
@@ -15,9 +30,18 @@ window.loadGTM = function () {
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer_gtm_t2tbqthz','GTM-T2TBQTHZ');
 };
+
 try {
   var storedConsent = JSON.parse(localStorage.getItem('cookie_consent'));
-  if (storedConsent && storedConsent.analytics) window.loadGTM();
+  if (storedConsent) {
+    window.gtagConsent('consent', 'update', {
+      analytics_storage: storedConsent.analytics ? 'granted' : 'denied',
+      ad_storage: storedConsent.marketing ? 'granted' : 'denied',
+      ad_user_data: storedConsent.marketing ? 'granted' : 'denied',
+      ad_personalization: storedConsent.marketing ? 'granted' : 'denied',
+    });
+    if (storedConsent.analytics || storedConsent.marketing) window.loadGTM();
+  }
 } catch (e) {}
 </script>
 <!-- End Google Tag Manager -->
@@ -1159,7 +1183,7 @@ function Footer({ onNav }) {
               <li><a href="tel:601602030" style={linkStyle}>601 602 030</a></li>
               <li><a href="tel:965270027" style={linkStyle}>965 270 027</a></li>
               <li><a href="mailto:taquilla@condadoclub.es" style={linkStyle}>taquilla@condadoclub.es</a></li>
-              <li style={{ marginTop: 8 }}><a href="#" style={{ ...linkStyle, color: 'var(--gold)' }}>Trabaja con nosotros →</a></li>
+              <li style={{ marginTop: 8 }}><a href="#" onClick={(e) => e.preventDefault()} style={{ ...linkStyle, color: 'var(--gold)' }}>Trabaja con nosotros →</a></li>
             </ul>
           </div>
 
@@ -3319,17 +3343,27 @@ function CookieBanner({ onNav }) {
   });
   const [view, setView] = useState('notice'); // 'notice' | 'preferences'
   const [analyticsOn, setAnalyticsOn] = useState(false);
+  const [marketingOn, setMarketingOn] = useState(false);
 
-  const persist = (analytics) => {
-    const record = { necessary: true, analytics, date: Date.now() };
+  const persist = (analytics, marketing) => {
+    const record = { necessary: true, analytics, marketing, date: Date.now() };
     try { localStorage.setItem('cookie_consent', JSON.stringify(record)); } catch (e) {}
-    if (analytics && window.loadGTM) window.loadGTM();
+    if (window.gtagConsent) {
+      window.gtagConsent('consent', 'update', {
+        analytics_storage: analytics ? 'granted' : 'denied',
+        ad_storage: marketing ? 'granted' : 'denied',
+        ad_user_data: marketing ? 'granted' : 'denied',
+        ad_personalization: marketing ? 'granted' : 'denied',
+      });
+    }
+    if ((analytics || marketing) && window.loadGTM) window.loadGTM();
     setConsent(record);
     setView('notice');
   };
 
   const openPreferences = () => {
     setAnalyticsOn(consent ? consent.analytics : false);
+    setMarketingOn(consent ? consent.marketing : false);
     setView('preferences');
   };
 
@@ -3380,9 +3414,9 @@ function CookieBanner({ onNav }) {
             </a>.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'flex-end' }}>
-            <button onClick={() => persist(false)} className="btn btn-ghost">Rechazar</button>
+            <button onClick={() => persist(false, false)} className="btn btn-ghost">Rechazar</button>
             <button onClick={openPreferences} className="btn btn-ghost">Preferencias</button>
-            <button onClick={() => persist(true)} className="btn btn-gold">Aceptar todo</button>
+            <button onClick={() => persist(true, true)} className="btn btn-gold">Aceptar todo</button>
           </div>
         </>
       ) : (
@@ -3390,22 +3424,29 @@ function CookieBanner({ onNav }) {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, padding: '14px 0', borderBottom: '1px solid var(--w08)' }}>
               <div>
-                <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--white)', marginBottom: 4 }}>Necesarias</p>
-                <p style={{ fontSize: 12, color: 'var(--w40)', lineHeight: 1.55 }}>Imprescindibles para el funcionamiento de la web. Siempre activas.</p>
+                <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--white)', marginBottom: 4 }}>Funcional</p>
+                <p style={{ fontSize: 12, color: 'var(--w40)', lineHeight: 1.55 }}>El almacenamiento o acceso técnico es estrictamente necesario para el propósito legítimo de permitir el uso de un servicio específico explícitamente solicitado por el abonado o usuario, o con el único propósito de llevar a cabo la transmisión de una comunicación a través de una red de comunicaciones electrónicas.</p>
               </div>
               <CookieToggle checked disabled />
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, padding: '14px 0' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, padding: '14px 0', borderBottom: '1px solid var(--w08)' }}>
               <div>
                 <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--white)', marginBottom: 4 }}>Estadísticas</p>
-                <p style={{ fontSize: 12, color: 'var(--w40)', lineHeight: 1.55 }}>Google Analytics. Nos ayuda a entender cómo se usa el sitio.</p>
+                <p style={{ fontSize: 12, color: 'var(--w40)', lineHeight: 1.55 }}>El almacenamiento o acceso técnico que es utilizado exclusivamente con fines estadísticos.</p>
               </div>
               <CookieToggle checked={analyticsOn} onChange={() => setAnalyticsOn((v) => !v)} />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, padding: '14px 0' }}>
+              <div>
+                <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--white)', marginBottom: 4 }}>Marketing</p>
+                <p style={{ fontSize: 12, color: 'var(--w40)', lineHeight: 1.55 }}>El almacenamiento o acceso técnico es necesario para crear perfiles de usuario para enviar publicidad, o para rastrear al usuario en una web o en varias web con fines de marketing similares.</p>
+              </div>
+              <CookieToggle checked={marketingOn} onChange={() => setMarketingOn((v) => !v)} />
             </div>
           </div>
           <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end', marginTop: 22 }}>
             <button onClick={() => setView('notice')} className="btn btn-ghost">Atrás</button>
-            <button onClick={() => persist(analyticsOn)} className="btn btn-gold">Guardar preferencias</button>
+            <button onClick={() => persist(analyticsOn, marketingOn)} className="btn btn-gold">Guardar preferencias</button>
           </div>
         </>
       )}
