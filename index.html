@@ -87,7 +87,7 @@ try {
     "addressCountry": "ES"
   },
   "telephone": "+34601602030",
-  "email": "taquilla@condadoclub.es",
+  "email": "taquilla@condadodenia.com",
   "sameAs": [
     "https://www.instagram.com/condado.club"
   ],
@@ -1181,8 +1181,7 @@ function Footer({ onNav }) {
             <p className="micro" style={{ color: 'var(--gold)', marginBottom: 14 }}>Contacto</p>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
               <li><a href="tel:601602030" style={linkStyle}>601 602 030</a></li>
-              <li><a href="tel:965270027" style={linkStyle}>965 270 027</a></li>
-              <li><a href="mailto:taquilla@condadoclub.es" style={linkStyle}>taquilla@condadoclub.es</a></li>
+              <li><a href="mailto:taquilla@condadodenia.com" style={linkStyle}>taquilla@condadodenia.com</a></li>
               <li style={{ marginTop: 8 }}><a href="#" onClick={(e) => e.preventDefault()} style={{ ...linkStyle, color: 'var(--gold)' }}>Trabaja con nosotros →</a></li>
             </ul>
           </div>
@@ -1422,44 +1421,22 @@ function Home({ onNav }) {
         }
       `}</style>
 
-      {/* ARTIST TICKER */}
-      <div style={{ background: 'var(--night-2)', borderTop: '1px solid var(--w08)', borderBottom: '1px solid var(--w08)', overflow: 'hidden', padding: '14px 0' }}>
-        <div className="artist-ticker">
-          {[...ARTISTS, ...ARTISTS].map((a, i) => (
-            <span key={i} className="ticker-item">
-              <span className={i % 3 === 1 ? 'ticker-name ticker-gold' : 'ticker-name'}>{a.name.toUpperCase()}</span>
-              <span className="ticker-dot">·</span>
-            </span>
-          ))}
+      <section style={{ background: 'var(--night-2)', borderTop: '1px solid var(--w08)', borderBottom: '1px solid var(--w08)', padding: '28px 24px' }}>
+        <div style={{ maxWidth: 980, margin: '0 auto', textAlign: 'center' }}>
+          <p className="serif" style={{ fontSize: 'clamp(24px, 3.2vw, 36px)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', lineHeight: 1.2, marginBottom: 18 }}>
+            VOTA CONDADO TOP 100 WORLD'S BEST CLUBS
+          </p>
+          <a
+            href="https://www.nightlifeinternational.org/en/congress-awards/100-world-s-best-clubs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-gold"
+            style={{ display: 'inline-flex' }}
+          >
+            Votar ahora →
+          </a>
         </div>
-        <style>{`
-          .artist-ticker {
-            display: flex;
-            width: max-content;
-            animation: ticker-scroll 28s linear infinite;
-          }
-          .artist-ticker:hover { animation-play-state: paused; }
-          @keyframes ticker-scroll {
-            0%   { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-          }
-          .ticker-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 18px;
-            padding: 0 18px;
-            white-space: nowrap;
-          }
-          .ticker-name {
-            font-size: 11px;
-            font-weight: 500;
-            letter-spacing: 3px;
-            color: var(--w40);
-          }
-          .ticker-gold { color: var(--gold); font-weight: 700; }
-          .ticker-dot { color: var(--gold-border); font-size: 8px; }
-        `}</style>
-      </div>
+      </section>
 
       {/* PRÓXIMOS EVENTOS — widget Fourvenues */}
       <section className="container" style={{ position: 'relative', overflow: 'hidden' }}>
@@ -1497,8 +1474,8 @@ function Home({ onNav }) {
         {[
           { num: 'TOP #94', label: 'Mejores clubs del mundo' },
           { num: '11 AÑOS',  label: 'Desde 2015 en Dénia' },
-          { num: '3 NIVELES', label: '2 palcos' },
-          { num: '06:30', label: 'Last call · Abierto todo el año' },
+          { num: '3 VIPS', label: '2 palcos y VIP Escenario' },
+          { num: 'OPEN', label: 'Abierto todo el año' },
         ].map((s, i) => (
           <div key={i} className="stat">
             <div className="stat-num serif">{s.num}</div>
@@ -1555,7 +1532,6 @@ function Home({ onNav }) {
                   <p className="serif" style={{ fontSize: 18, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 3 }}>
                     {a.name}
                   </p>
-                  <p className="micro">{a.genre}</p>
                 </div>
               </div>
             ))}
@@ -2080,7 +2056,7 @@ function Sala({ onNav }) {
       <PageHeader
         eyebrow="El espacio · 3 niveles · 1.500 personas"
         title='La <em style="font-style:normal;font-weight:300;color:var(--gold)">Sala</em>'
-        subtitle="Una de las salas más imponentes de la Costa Blanca. Sonido L-Acoustics, escenografía teatral y tecnología de espectáculo: cada noche, una producción distinta."
+        subtitle="Una de las salas más imponentes de la Costa Blanca. Sonido d&b Audiotechnik, escenografía teatral y tecnología de espectáculo: cada noche, una producción distinta."
       />
 
       {/* Sub-nav: Sala / Artistas */}
@@ -2117,13 +2093,11 @@ function Sala({ onNav }) {
               </h3>
               <ul style={{ listStyle: 'none', display: 'grid', gap: 0 }}>
                 {[
-                  ['Capacidad total', '1.500 personas'],
-                  ['Niveles', '3 alturas · pista, anillo, terraza'],
-                  ['Sistema de sonido', 'L-Acoustics K2 · subgraves SB28'],
-                  ['Iluminación', '120 cabezas robóticas · láser RGB'],
-                  ['Efectos especiales', 'CO₂ · llamas · confeti · pirotecnia'],
-                  ['LED', '180 m² de pantallas a escena completa'],
-                  ['Aforo VIP', '24 mesas · 3 categorías'],
+                  ['Niveles', 'Pista, Escenario, Palco 1 y Palco 2'],
+                  ['Sistema de sonido', 'd&b Audiotechnik'],
+                  ['Iluminación', 'La instalación de LED dinámico más larga de Europa'],
+                  ['PANTALLA LED', 'Pantalla LED 4K 100m2'],
+                  ['Aforo VIP', '3 zonas 48 mesas '],
                 ].map(([k, v], i) => (
                   <li key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '16px 0', borderBottom: '1px solid var(--w08)', gap: 16, alignItems: 'baseline' }}>
                     <span style={{ fontSize: 10, letterSpacing: 2, textTransform: 'uppercase', color: 'var(--w40)' }}>{k}</span>
@@ -2193,7 +2167,7 @@ function Sala({ onNav }) {
               ¿Quién ha pasado por <em style={{ fontStyle: 'normal', fontWeight: 300, color: 'var(--gold)' }}>Condado</em>?
             </h3>
             <p style={{ fontSize: 14, color: 'var(--w60)', maxWidth: 560, margin: '0 auto 28px', lineHeight: 1.7 }}>
-              Reggaeton, urban, electronic, house. Los nombres que han marcado la escena hispana en los últimos 15 años.
+              Los nombres que han marcado la escena musical en los últimos 11 años.
             </p>
             <button onClick={() => onNav('/artistas')} className="btn btn-gold">Ver todos los artistas →</button>
           </div>
@@ -2262,7 +2236,6 @@ function Artistas({ onNav }) {
                   <p className="serif" style={{ fontSize: 19, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 3 }}>
                     {a.name}
                   </p>
-                  <p className="micro">{a.genre}</p>
                 </div>
               </div>
             ))}
@@ -2356,7 +2329,7 @@ function EventosPrivados({ onNav }) {
           <div style={{ marginTop: 88, textAlign: 'center' }}>
             <span className="eyebrow">Empresas que han confiado en nosotros</span>
             <div className="ep-clients">
-              {['Paco Rabanne', 'Cruz Roja', 'Orange', 'Help!', 'Hospital Marina Salud', 'BBVA', 'Cámara de Comercio de Alicante', 'Atomic Studio'].map((c, i) => (
+              {['Paco Rabanne', 'Cruz Roja', 'Orange', 'Help!', 'MISS ESPAÑA', 'BBVA', 'Cámara de Comercio de Alicante', 'Atomic Studio'].map((c, i) => (
                 <span key={i} className="ep-client serif">{c}</span>
               ))}
             </div>
@@ -2489,7 +2462,7 @@ function Contacto({ onNav }) {
           {/* Contact channels */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14, marginBottom: 64 }}>
             {[
-              { eye: 'Entradas y reservas', email: 'taquilla@condadoclub.es', tel: '601 602 030 · 965 270 027' },
+              { eye: 'Entradas y reservas', email: 'taquilla@condadodenia.com', tel: '601 602 030' },
               { eye: 'Trabaja con nosotros', email: 'rrhh@condadoclub.es', tel: null },
             ].map((c, i) => (
               <div key={i} className="ctc-card">
